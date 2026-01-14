@@ -1,0 +1,3 @@
+If there are already capital letters among the source data, they will also be converted to windows 1251 encoding. 
+There is no check in this program that checks the input characters, therefore, it will convert not only lowercase letters, 
+but also any characters, which is a kind of error.
