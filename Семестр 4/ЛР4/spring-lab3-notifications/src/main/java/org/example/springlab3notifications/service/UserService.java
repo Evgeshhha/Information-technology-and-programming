@@ -1,0 +1,48 @@
+package org.example.springlab3notifications.service;
+
+import lombok.RequiredArgsConstructor;
+import org.example.springlab3notifications.exception.UserNotFoundException;
+import org.example.springlab3notifications.model.dto.UserDto;
+import org.example.springlab3notifications.model.entity.User;
+import org.example.springlab3notifications.repository.UserRepository;
+import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+    public User createUser(UserDto request) {
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPhone(request.getPhone());
+        user.setDeviceToken(request.getDeviceToken());
+        user.setTelegramChatId(request.getTelegramChatId());
+        user.setCreatedAt(LocalDateTime.now());
+        return userRepository.save(user);
+    }
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+    }
+    public User updateUser(Long id, UserDto request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPhone(request.getPhone());
+        user.setDeviceToken(request.getDeviceToken());
+        user.setTelegramChatId(request.getTelegramChatId());
+        return userRepository.save(user);
+    }
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        userRepository.delete(user);
+    }
+}
